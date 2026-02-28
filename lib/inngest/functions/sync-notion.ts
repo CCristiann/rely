@@ -18,16 +18,16 @@ interface NotionConfig {
 
 export const syncNotionFn = inngest.createFunction(
     { id: "sync-notion", retries: 3 },
-    { event: "notion/sync-requested" },
+    { event: "notion/sync.requested" },
     async ({ event, step }) => {
         const { dataSourceId, projectId } = event.data as SyncNotionEventData
 
-        await step.run("mark-syncing", () => {
+        await step.run("mark-syncing", () =>
             prisma.dataSource.update({
                 where: { id: dataSourceId },
                 data: { status: "SYNCING" }
             })
-        })
+        )
 
         const dataSource = await step.run("load-config", () =>
             prisma.dataSource.findFirstOrThrow({

@@ -56,3 +56,23 @@ export function useSyncNotion(projectId: string) {
         },
     });
 }
+
+export interface NotionDataSource {
+    id: string;
+    workspaceName: string;
+    status: "READY" | "SYNCING" | "ERROR";
+    lastSyncedAt: string | null;
+    pageCount: number;
+}
+
+export function useNotionDataSource(projectId: string) {
+    return useQuery({
+        queryKey: ["notion-datasource", projectId],
+        queryFn: async () => {
+            const res = await fetch(`/api/projects/${projectId}/notion/datasource`);
+            if (res.status === 404) return null;
+            if (!res.ok) throw new Error("Failed to fetch Notion data source");
+            return res.json() as Promise<NotionDataSource>;
+        },
+    });
+}
