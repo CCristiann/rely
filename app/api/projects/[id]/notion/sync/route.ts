@@ -21,6 +21,11 @@ export async function POST(
     return NextResponse.json({ error: "Notion not connected" }, { status: 404 });
   }
 
+  await prisma.dataSource.update({
+    where: { id: dataSource.id },
+    data: { status: "SYNCING" },
+  });
+
   await inngest.send({
     name: "notion/sync.requested",
     data: { dataSourceId: dataSource.id, projectId },
