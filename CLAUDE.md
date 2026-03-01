@@ -47,6 +47,7 @@ app/
 components/
   chat/                       # ChatPanel, ChatMessages, ChatMessage, ChatInput
   common/formatted-response.tsx  # Markdown + KaTeX renderer
+  documents/file-type-icon.tsx   # FileTypeIcon component + getFileTypeConfig(mimeType) → {label, Icon, containerClass, iconClass, chipClass}
   sidebar/                    # Main nav sidebar
   ui/                         # shadcn primitives
 
@@ -86,7 +87,7 @@ auth.ts                       # NextAuth config
 2. **Connectors**: `lib/connectors/extractors/` — `pdf.ts` (pdf-parse), `docx.ts` (mammoth). Adding a new format = add an extractor, zero pipeline changes
 3. **Query**: rewrite question with last 4 turns → hybrid retrieval (vector `<=>` + `to_tsvector`, RRF k=60, top 10) → rerank to top 5 → streamText with Gemini
 4. Chunks stored in `public` Supabase bucket at `userId/projectId/uuid-filename`
-5. **DataSource**: each Project has a `DataSource{type:FILE}` that groups its uploaded documents. Future: NOTION, GDRIVE, URL types
+5. **DataSource**: each Project has a `DataSource{type:FILE}` that groups its uploaded documents. NOTION is implemented — see `lib/inngest/functions/sync-notion.ts` and `hooks/use-notion.ts`.
 
 ### Streaming
 - API returns a Vercel AI SDK data stream
@@ -99,6 +100,16 @@ auth.ts                       # NextAuth config
 - `ChatPanel` uses flex-col with `flex-1 min-h-0` on the messages wrapper
 - `ChatMessages` scroll container is `flex-1 min-h-0 overflow-y-auto overflow-x-hidden`
 - Gradient fade overlays are absolutely positioned inside the messages wrapper
+
+### Notion Integration
+- Notion documents use `mimeType: "notion/page"` — check this when handling file types
+- `useNotionDataSource` polls every 2s while `status === "SYNCING"` (mirrors `useDocuments` pattern)
+- `useSyncNotion.onSuccess` must invalidate both `["documents"]` and `["notion-datasource"]` query keys
+- OAuth entry point: `/api/auth/notion?projectId=...`
+
+### Inngest — Critical Pattern
+- API routes MUST update DB status **before** `inngest.send()`, not after. If the status update happens inside the Inngest job's first step, the client-side polling never activates (race condition: `onSuccess` refetches before the job starts).
+- Upload route sets `Document{status:PENDING}` → then `inngest.send()`. Notion sync sets `DataSource{status:SYNCING}` → then `inngest.send()`. Follow this for any new Inngest integration.
 
 ### Async Ingestion (Inngest)
 - Run Inngest dev server: `npx inngest-cli@latest dev` alongside `npm run dev`
@@ -129,3 +140,7 @@ auth.ts                       # NextAuth config
 - `cn()` utility (clsx + tailwind-merge) used throughout
 - Raw SQL (`$queryRawUnsafe`) for vector operations only — everything else uses Prisma
 - Dark mode forced via `.dark` class on `<html>`
+- Navigation links styled as buttons: `<Link className={buttonVariants({...})}>` — never nest `<Link>` inside `<Button>`
+- Tailwind v4: use integer opacity `bg-primary/2` not `bg-primary/[0.02]`
+- `git add` paths with brackets must be quoted: `git add 'app/api/projects/[id]/route.ts'`
+- `removeExtension(filename)` in `lib/utils.ts` — strips extension for display names
