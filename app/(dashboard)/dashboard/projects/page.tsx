@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { PageHeader } from "@/components/common/page-header";
 import { ProjectsGrid } from "@/components/projects/projects-grid";
 import { useProjects } from "@/hooks/use-projects";

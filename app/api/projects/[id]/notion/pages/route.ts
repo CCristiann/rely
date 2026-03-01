@@ -72,7 +72,12 @@ export async function POST(request: Request, { params }: RouteContext) {
         },
     });
 
-    // Trigger the initial sync immediately
+    // Mark SYNCING before dispatching so client-side polling activates immediately
+    await prisma.dataSource.update({
+        where: { id: dataSource.id },
+        data: { status: "SYNCING" },
+    });
+
     await inngest.send({
         name: "notion/sync.requested",
         data: { dataSourceId: dataSource.id, projectId },

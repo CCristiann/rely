@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProjectForm, type ProjectFormValues } from "@/components/projects/project-form";
 import { useCreateProject } from "@/hooks/use-projects";
 import { toast } from "@/components/ui/use-toast";

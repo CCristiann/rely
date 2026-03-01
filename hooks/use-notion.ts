@@ -37,6 +37,7 @@ export function useSaveNotionPages(projectId: string) {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["documents", projectId] });
+            queryClient.invalidateQueries({ queryKey: ["notion-datasource", projectId] });
         },
     });
 }
