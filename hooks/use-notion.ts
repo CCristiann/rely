@@ -53,6 +53,7 @@ export function useSyncNotion(projectId: string) {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["documents", projectId] });
+            queryClient.invalidateQueries({ queryKey: ["notion-datasource", projectId] });
         },
     });
 }
@@ -74,5 +75,7 @@ export function useNotionDataSource(projectId: string) {
             if (!res.ok) throw new Error("Failed to fetch Notion data source");
             return res.json() as Promise<NotionDataSource>;
         },
+        refetchInterval: (query) =>
+            query.state.data?.status === "SYNCING" ? 2000 : false,
     });
 }
