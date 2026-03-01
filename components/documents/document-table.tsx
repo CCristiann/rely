@@ -4,13 +4,13 @@ import { useState } from "react";
 import { format } from "date-fns";
 import {
     FileText,
-    FileIcon,
     Trash2,
     ExternalLink,
     Layers,
     Loader2,
     MoreHorizontal,
 } from "lucide-react";
+import { FileTypeIcon, getFileTypeConfig } from "@/components/documents/file-type-icon";
 
 import {
     Table,
@@ -41,7 +41,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/common/empty-state";
 import { LoadingSpinner } from "@/components/common/loading-spinner";
-import { formatBytes, getFileExtension } from "@/lib/utils";
+import { formatBytes, cn } from "@/lib/utils";
 import type { Document, DocumentStatus } from "@/types";
 
 interface DocumentTableProps {
@@ -166,29 +166,21 @@ export function DocumentTable({ documents, isLoading, onDelete }: DocumentTableP
                     </TableHeader>
                     <TableBody>
                         {documents.map((doc) => {
-                            const ext = getFileExtension(doc.name);
-                            const isPdf = doc.mimeType.includes("pdf");
-
+                            const fileType = getFileTypeConfig(doc.mimeType);
                             return (
                                 <TableRow key={doc.id} className="group transition-colors hover:bg-muted/30">
                                     <TableCell className="py-3">
                                         <div className="flex items-center gap-3">
-                                            <div className="flex items-center justify-center w-9 h-9 rounded-md bg-primary/10 border border-primary/20 shrink-0 shadow-sm transition-transform group-hover:scale-105">
-                                                {isPdf ? (
-                                                    <FileText className="h-4 w-4 text-primary" />
-                                                ) : (
-                                                    <FileIcon className="h-4 w-4 text-primary" />
-                                                )}
-                                            </div>
+                                            <FileTypeIcon mimeType={doc.mimeType} />
                                             <div className="flex flex-col max-w-[200px] sm:max-w-[300px] lg:max-w-[400px]">
                                                 <span className="text-sm font-medium text-foreground truncate" title={doc.name}>
                                                     {doc.name}
                                                 </span>
-                                                <div className="flex items-center gap-2 mt-0.5">
-                                                    <Badge variant="secondary" className="text-[9px] px-1 py-0 h-4 uppercase tracking-wider">
-                                                        {ext}
-                                                    </Badge>
-                                                    {/* Show size on small screens since column is hidden */}
+                                                <div className="flex items-center gap-1.5 mt-0.5">
+                                                    <span className={cn("text-[10px] font-semibold uppercase tracking-wide", fileType.chipClass)}>
+                                                        {fileType.label}
+                                                    </span>
+                                                    <span className="text-[10px] text-muted-foreground/40 md:hidden">·</span>
                                                     <span className="text-[11px] text-muted-foreground md:hidden">
                                                         {formatBytes(doc.fileSize)}
                                                     </span>
