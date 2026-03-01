@@ -32,7 +32,7 @@ export default function CreateProjectPage() {
 
           <div className="flex flex-col gap-y-6">
             <div className="flex flex-col">
-              <h3 className="font-[--font-eb-gamond] text-3xl">Create a Project</h3>
+              <h3 className="font-[--font-eb-gamond] text-4xl">Create a Project</h3>
               <p className="text-muted-foreground">Projects are isolated knowledge bases. Upload documents and start chatting.</p>
             </div>
             <ProjectForm onSubmit={handleSubmit} />

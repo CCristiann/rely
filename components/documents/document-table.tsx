@@ -41,7 +41,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/common/empty-state";
 import { LoadingSpinner } from "@/components/common/loading-spinner";
-import { formatBytes, cn } from "@/lib/utils";
+import { formatBytes, cn, removeExtension } from "@/lib/utils";
 import type { Document, DocumentStatus } from "@/types";
 
 interface DocumentTableProps {
@@ -174,7 +174,7 @@ export function DocumentTable({ documents, isLoading, onDelete }: DocumentTableP
                                             <FileTypeIcon mimeType={doc.mimeType} />
                                             <div className="flex flex-col max-w-[200px] sm:max-w-[300px] lg:max-w-[400px]">
                                                 <span className="text-sm font-medium text-foreground truncate" title={doc.name}>
-                                                    {doc.name}
+                                                    {removeExtension(doc.name)}
                                                 </span>
                                                 <div className="flex items-center gap-1.5 mt-0.5">
                                                     <span className={cn("text-[10px] font-semibold uppercase tracking-wide", fileType.chipClass)}>

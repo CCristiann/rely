@@ -6,12 +6,13 @@ import { DocumentTable } from "@/components/documents/document-table";
 import { UploadZone } from "@/components/documents/upload-zone";
 import { NotionPagePicker } from "@/components/notion/notion-page-picker";
 import { NotionDataSourceCard } from "@/components/notion/notion-datasource-card";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { useDeleteDocument, useDocuments } from "@/hooks/use-documents";
 import { useNotionDataSource } from "@/hooks/use-notion";
 import { useQueryClient } from "@tanstack/react-query";
-import { getActiveProjectIdFromPath } from "@/lib/utils";
+import { cn, getActiveProjectIdFromPath } from "@/lib/utils";
+import Link from "next/link";
 
 export default function DocumentsPage() {
     const pathname = usePathname()
@@ -83,14 +84,12 @@ export default function DocumentsPage() {
                         </Button>
                     </>
                 ) : (
-                    <Button
-                        variant="outline"
-                        onClick={() => {
-                            window.location.href = `/api/auth/notion?projectId=${activeProjectId}`
-                        }}
+                    <Link
+                        className={cn(buttonVariants({ size: "lg" }))}
+                        href={`/api/auth/notion?projectId=${activeProjectId}`}
                     >
                         Connect Notion
-                    </Button>
+                    </Link>
                 )}
             </div>
 

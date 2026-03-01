@@ -34,7 +34,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             <Card className="relative h-full transition-all duration-200 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 bg-card">
                 <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-primary/2 pointer-events-none" />
 
-                <CardContent className="p-5 flex flex-col gap-4 h-full">
+                <CardContent className="flex flex-col justify-between gap-4 h-full">
                     {/* Header */}
                     <div className="flex items-start gap-3">
                         <div

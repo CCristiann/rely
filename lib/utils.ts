@@ -59,3 +59,9 @@ export function getActiveChatIdFromPath(pathname: string) {
   }
   return null;
 }
+
+export function removeExtension(filename: string) {
+  const dotIndex = filename.lastIndexOf(".");
+  if (dotIndex === -1) return filename;
+  return filename.substring(0, dotIndex);
+}

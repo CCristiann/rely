@@ -71,7 +71,7 @@ export function ProjectForm({
         )}
       </div>
 
-      <Button type="submit" variant="secondary" className="w-full" disabled={loading}>
+      <Button type="submit" size="lg" className="w-full" disabled={loading}>
         {loading && <LoadingSpinner size="sm" />}
         {submitLabel}
       </Button>
