@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import type { Project } from "@/types";
+import { Separator } from "../ui/separator";
 
 interface ProjectCardProps {
     project: Project;
@@ -13,11 +14,11 @@ interface ProjectCardProps {
 
 const AVATAR_COLORS = [
     { bg: "bg-violet-500/15 border-violet-500/25", text: "text-violet-400" },
-    { bg: "bg-blue-500/15 border-blue-500/25",     text: "text-blue-400"   },
+    { bg: "bg-blue-500/15 border-blue-500/25", text: "text-blue-400" },
     { bg: "bg-emerald-500/15 border-emerald-500/25", text: "text-emerald-400" },
-    { bg: "bg-amber-500/15 border-amber-500/25",   text: "text-amber-400"  },
-    { bg: "bg-rose-500/15 border-rose-500/25",     text: "text-rose-400"   },
-    { bg: "bg-cyan-500/15 border-cyan-500/25",     text: "text-cyan-400"   },
+    { bg: "bg-amber-500/15 border-amber-500/25", text: "text-amber-400" },
+    { bg: "bg-rose-500/15 border-rose-500/25", text: "text-rose-400" },
+    { bg: "bg-cyan-500/15 border-cyan-500/25", text: "text-cyan-400" },
 ] as const;
 
 function projectColor(name: string) {
@@ -31,7 +32,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
     return (
         <Link href={`/dashboard/projects/${project.id}`} className="group block h-full">
             <Card className="relative h-full transition-all duration-200 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 bg-card">
-                <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-primary/[0.02] pointer-events-none" />
+                <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-primary/2 pointer-events-none" />
 
                 <CardContent className="p-5 flex flex-col gap-4 h-full">
                     {/* Header */}
@@ -64,8 +65,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
                         <ArrowRight className="h-3.5 w-3.5 text-muted-foreground/30 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0 mt-0.5" />
                     </div>
 
+                    <Separator />
+
                     {/* Footer */}
-                    <div className="flex items-center gap-3 pt-1 border-t border-border/50 mt-auto">
+                    <div className="flex items-center gap-3">
                         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                             <FileText className="h-3 w-3" />
                             <span>

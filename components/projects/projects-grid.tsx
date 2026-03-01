@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { Plus, Layers } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Layers } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProjectCard } from "./project-card";
 import { EmptyState } from "@/components/common/empty-state";
@@ -18,14 +16,22 @@ export function ProjectsGrid({ projects, isLoading }: ProjectsGridProps) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="rounded-lg border border-border bg-card p-5 space-y-3">
-            <Skeleton className="h-4 w-3/4" />
-            <Skeleton className="h-3 w-full" />
-            <Skeleton className="h-3 w-2/3" />
-            <div className="flex gap-3 pt-2">
-              <Skeleton className="h-3 w-16" />
-              <Skeleton className="h-3 w-16" />
-            </div>
+          <div key={i} className="rounded-lg border border-border bg-card p-5 flex flex-col gap-4">
+              {/* Header skeleton */}
+              <div className="flex items-start gap-3">
+                  <Skeleton className="h-9 w-9 rounded-md shrink-0" />
+                  <div className="flex-1 space-y-2">
+                      <Skeleton className="h-4 w-3/4" />
+                      <Skeleton className="h-3 w-full" />
+                      <Skeleton className="h-3 w-2/3" />
+                  </div>
+              </div>
+              {/* Footer skeleton */}
+              <div className="flex items-center gap-3 pt-1 border-t border-border/50">
+                  <Skeleton className="h-3 w-14" />
+                  <Skeleton className="h-3 w-14" />
+                  <Skeleton className="h-3 w-12 ml-auto" />
+              </div>
           </div>
         ))}
       </div>
